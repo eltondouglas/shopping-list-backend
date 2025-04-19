@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebSocket Test</title>
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+</head>
+<body>
+  <h1>WebSocket Test</h1>
+  <button id="joinGroup">Join Group</button>
+  <button id="sendMessage">Send Message</button>
+  <div id="messages"></div>
+
+  <script>
+    // Conectar ao servidor WebSocket
+    const socket = io('http://localhost:3000');
+
+    // Evento de conexão
+    socket.on('connect', () => {
+      console.log('Conectado ao servidor:', socket.id);
+    });
+
+    // Entrar em um grupo
+    document.getElementById('joinGroup').addEventListener('click', () => {
+      const groupId = 'grupo1'; // Substitua pelo ID do grupo desejado
+      socket.emit('joinGroup', groupId);
+      console.log(`Entrou no grupo: ${groupId}`);
+    });
+
+    // Enviar mensagem
+    document.getElementById('sendMessage').addEventListener('click', () => {
+      const groupId = 'grupo1'; // Substitua pelo ID do grupo desejado
+      const message = 'Olá, grupo!';
+      const itemId = 1;
+      const updates = {name: "Banana", price: 2.90, category: "Frutas", is_checked: true}
+
+      socket.emit('updateItem', { groupId, itemId,  updates});
+      console.log(`Mensagem enviada para o grupo ${groupId}: ${updates}`);
+    });
+
+    // Receber mensagens do grupo
+    socket.on('itemUpdated', (data) => {
+      console.log('Nova mensagem recebida:', data);
+      const messagesDiv = document.getElementById('messages');
+      const messageElement = document.createElement('p');
+      messageElement.textContent = `Usuário ${data.itemId}: ${data.updates}`;
+      messagesDiv.appendChild(messageElement);
+    });
+
+    // Evento de desconexão
+    socket.on('disconnect', () => {
+      console.log('Desconectado do servidor');
+    });
+  </script>
+</body>
+</html>

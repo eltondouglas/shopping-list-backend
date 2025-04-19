@@ -1,0 +1,39 @@
+{
+  "name": "shopping-list-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "ts-node ./src/server.ts",
+    "build": "npx tsc",
+    "start": "node ./dist/server.js",
+    "deploy": "npx tsc && node ./dist/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/express": "^5.0.1",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/node": "^22.14.1",
+    "@types/pg": "^8.11.13",
+    "@types/socket.io": "^3.0.1",
+    "dotenv": "^16.5.0",
+    "eslint": "^9.25.0",
+    "express": "^5.1.0",
+    "install": "^0.13.0",
+    "nodemon": "^3.1.9",
+    "npm": "^11.3.0",
+    "prettier": "^3.5.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.14.1",
+    "socket.io": "^4.8.1"
+  }
+}
