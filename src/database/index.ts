@@ -1,11 +1,11 @@
-import { Pool } from 'pg'; 
+import { Pool } from 'pg';
+import config from '../config/config';
 
 export const pool = new Pool({
-  user: 'seu_usuario',
-  host: 'localhost',
-  database: 'shopping_list',
-  password: 'sua_senha',
-  port: 5432,
+  connectionString: config.DB_URL,
+  ssl: {
+    rejectUnauthorized: false,
+  },
 });
 
 export async function saveMessageToDatabase({ userId, groupId, message }: { userId: string; groupId: string; message: string }) {

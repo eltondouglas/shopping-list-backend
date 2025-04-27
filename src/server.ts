@@ -3,18 +3,18 @@ import { createServer } from 'node:http';
 import { Server } from 'socket.io';
 import socketHandler from './sockets';
 import authRoutes from './routes/auth'
-import groupRoutes from './routes/groups'
-
+import groupRoutes from './routes/shopping_list'
+import config from './config/config';
+import { initializeDatabase } from './config/initialize';
+import path from 'path';
 
 const app = express();
-app.use(express.json());
-app.use('/api/auth', authRoutes);
-app.use('/api', groupRoutes);
 
 const server = createServer(app);
-const io = new Server(server, {
+
+export const io = new Server(server, {
     cors: {
-        origin: '*', // Configure conforme necessário
+        origin: '*',
         methods: ['GET', 'POST'],
     },
 });
@@ -22,10 +22,17 @@ const io = new Server(server, {
 // Middleware de autenticação para WebSocket
 socketHandler(io);
 
+initializeDatabase();
+
+app.use(express.json());
+app.use('/api/auth', authRoutes);
+app.use('/api', groupRoutes);
+
+
 app.get('/', (req, res) => {
-    res.sendFile('E:\\shopping_list\\shopping-list-backend\\src\\index.html');
+    res.sendFile(path.join(__dirname, './index.html'));
 });
 
-server.listen(3000, () => {
-    console.log('server running at http://localhost:3000');
+server.listen(config.SERVER_PORT, config.SERVER_HOST, () => {
+    console.log(`Server is running on http://${config.SERVER_HOST}:${config.SERVER_PORT}`);
 });
